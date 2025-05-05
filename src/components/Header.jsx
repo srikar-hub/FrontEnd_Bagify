@@ -1,21 +1,31 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+import axios from "axios";
+const Header = ({ loggedIn = true }) => {
+  const handleLogout = async () => {
+    try {
+      await axios.get("http://localhost:4000/logout", {
+        withCredentials: true,
+      });
+      window.location.href = "/login";
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
 
-const Navbar = ({ loggedIn = true }) => {
   return (
     <nav className="w-full flex justify-between px-5 py-3 font-['helvetica_now_display']">
       <h3 className="text-xl">Bagify</h3>
       {loggedIn && (
         <div className="flex gap-5">
-          <a href="/shop">Shop</a>
-          <a href="/cart">Cart</a>
-          <a href="/myaccount">My Account</a>
-          <a className="text-red-600" href="/users/logout">
-            Logout
-          </a>
+          <NavLink to="/shop">Shop</NavLink>
+          <NavLink to="/cart">Cart</NavLink>
+          <NavLink to="/myaccount">My Account</NavLink>
+          <button onClick={handleLogout}>Logout</button>
         </div>
       )}
     </nav>
   );
 };
 
-export default Navbar;
+export default Header;

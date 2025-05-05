@@ -3,7 +3,33 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 const Login = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let res = await axios.post("http://localhost:4000/login", formData, {
+      withCredentials: true,
+    });
+    if (res.status === 200) {
+      navigate("/shop");
+    } else {
+      alert(res.data.message);
+    }
+  };
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
@@ -30,7 +56,11 @@ const Login = () => {
         </div>
 
         {/* Login Form */}
-        <form className="bg-white rounded-lg shadow-md p-8">
+        <form
+          className="bg-white rounded-lg shadow-md p-8"
+          method="post"
+          onSubmit={handleSubmit}
+        >
           {/* Email Field */}
           <div className="mb-6">
             <label
@@ -42,6 +72,9 @@ const Login = () => {
             <input
               id="email"
               type="email"
+              onChange={handleChange}
+              name="email"
+              value={formData.email}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
               placeholder="Enter your email"
             />
@@ -59,6 +92,9 @@ const Login = () => {
               <input
                 id="password"
                 type="password"
+                name="password"
+                onChange={handleChange}
+                value={formData.password}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 placeholder="Enter your password"
               />
@@ -84,7 +120,7 @@ const Login = () => {
 
           {/* Login Button */}
           <button
-            type="button"
+            type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 !rounded-button whitespace-nowrap cursor-pointer flex items-center justify-center gap-2"
           >
             <i className="fas fa-sign-in-alt"></i>

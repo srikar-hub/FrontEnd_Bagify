@@ -1,6 +1,35 @@
 import React from "react";
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 const Signup = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await axios.post("http://localhost:4000/create", formData, {
+      withCredentials: true,
+    });
+
+    if (res.status == 201) {
+      alert(res.data.message);
+      navigate("/login");
+    } else {
+      alert("Error:" + res.data.message);
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 space-y-8">
@@ -11,8 +40,9 @@ const Signup = () => {
           </p>
         </div>
 
-        <form className="mt-8 space-y-6">
+        <form className="mt-8 space-y-6" method="post" onSubmit={handleSubmit}>
           <div className="space-y-5">
+            {/* Username Field */}
             <div>
               <label
                 htmlFor="username"
@@ -24,7 +54,10 @@ const Signup = () => {
                 <input
                   id="username"
                   name="username"
+                  value={formData.username}
                   type="text"
+                  onChange={handleChange}
+                  required
                   className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                   placeholder="Enter username"
                 />
@@ -32,6 +65,7 @@ const Signup = () => {
               </div>
             </div>
 
+            {/* Email Field */}
             <div>
               <label
                 htmlFor="email"
@@ -44,6 +78,9 @@ const Signup = () => {
                   id="email"
                   name="email"
                   type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
                   className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                   placeholder="Enter email address"
                 />
@@ -51,6 +88,7 @@ const Signup = () => {
               </div>
             </div>
 
+            {/* Password Field */}
             <div>
               <label
                 htmlFor="password"
@@ -63,6 +101,9 @@ const Signup = () => {
                   id="password"
                   name="password"
                   type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
                   className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                   placeholder="Create password"
                 />
@@ -75,6 +116,7 @@ const Signup = () => {
               </div>
             </div>
 
+            {/* Password Guidelines */}
             <div className="bg-gray-50 p-4 rounded-md">
               <h3 className="text-sm font-medium text-gray-700 mb-2">
                 Password must contain:
@@ -106,17 +148,19 @@ const Signup = () => {
                 </li>
               </ul>
             </div>
+
+            {/* Submit Button */}
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Create Account
+              </button>
+            </div>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Create Account
-            </button>
-          </div>
-
+          {/* Already have account link */}
           <div className="flex items-center justify-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
@@ -130,6 +174,7 @@ const Signup = () => {
           </div>
         </form>
 
+        {/* Divider and OAuth options */}
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -143,6 +188,7 @@ const Signup = () => {
           </div>
         </div>
 
+        {/* Terms and Conditions */}
         <div className="text-center text-xs text-gray-500 mt-8">
           By signing up, you agree to our{" "}
           <a href="#" className="text-indigo-600 hover:text-indigo-500">
