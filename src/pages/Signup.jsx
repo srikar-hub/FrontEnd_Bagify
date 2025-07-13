@@ -8,6 +8,8 @@ const Signup = () => {
     username: "",
     email: "",
     password: "",
+    phoneNumber: "",
+    address: "",
   });
 
   const handleChange = (e) => {
@@ -25,7 +27,7 @@ const Signup = () => {
 
     if (res.status == 201) {
       alert(res.data.message);
-      navigate("/login");
+      navigate("/");
     } else {
       alert("Error:" + res.data.message);
     }
@@ -85,6 +87,52 @@ const Signup = () => {
                   placeholder="Enter email address"
                 />
                 <i className="fas fa-envelope absolute right-3 top-3 text-gray-400"></i>
+              </div>
+            </div>
+
+            {/* Phone Number Field */}
+            <div>
+              <label
+                htmlFor="phoneNumber"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Phone Number
+              </label>
+              <div className="mt-1 relative">
+                <input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="tel"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  required
+                  className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                  placeholder="Enter phone number"
+                />
+                <i className="fas fa-phone absolute right-3 top-3 text-gray-400"></i>
+              </div>
+            </div>
+
+            {/* Address Field */}
+            <div>
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Address
+              </label>
+              <div className="mt-1 relative">
+                <input
+                  id="address"
+                  name="address"
+                  type="text"
+                  value={formData.address}
+                  onChange={handleChange}
+                  required
+                  className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                  placeholder="Enter address"
+                />
+                <i className="fas fa-map-marker-alt absolute right-3 top-3 text-gray-400"></i>
               </div>
             </div>
 

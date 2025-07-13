@@ -1,15 +1,34 @@
 import React, { useState, useEffect } from "react";
+// Helper to convert Buffer (array) to base64
+function bufferToBase64(buffer) {
+  if (!buffer) return "";
+  // If it's already a string, return as is
+  if (typeof buffer === "string") return buffer;
+  // If it's an object with 'data' property (from MongoDB Binary), use that
+  if (buffer.data && Array.isArray(buffer.data)) buffer = buffer.data;
+  // Convert array to Uint8Array, then to base64
+  const uint8Array = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < uint8Array.length; i++) {
+    binary += String.fromCharCode(uint8Array[i]);
+  }
+  return window.btoa(binary);
+}
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await axios.get("http://localhost:4000/product/all");
+        const res = await axios.get("http://localhost:4000/product/all", {
+          withCredentials: true,
+        });
         setProducts(res.data.products);
         res.data.products.forEach((product) => {
           if (product.image?.data) {
@@ -28,8 +47,12 @@ const ShopPage = () => {
           }
         });
       } catch (err) {
-        setError("Failed to fetch Products");
-        console.error(err);
+        if (err.response?.status === 401) {
+          navigate("/login");
+        } else {
+          setError("Failed to fetch Products");
+          console.error(err);
+        }
       } finally {
         setLoading(false);
       }
@@ -46,11 +69,35 @@ const ShopPage = () => {
     );
   }
 
+  // Add to Cart handler
+  const handleAddToCart = async (e, productId) => {
+    e.preventDefault();
+    const form = e.target;
+    const quantity = parseInt(form.quantity.value, 10) || 1;
+    try {
+      await axios.post(
+        "http://localhost:4000/cart/add",
+        { productId, quantity },
+        { withCredentials: true }
+      );
+      setSuccess("Added to cart!");
+      setTimeout(() => setSuccess(""), 2000);
+    } catch {
+      setError("Failed to add to cart");
+      setTimeout(() => setError(""), 2000);
+    }
+  };
+
   return (
     <>
       {error && (
-        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-md bg-red-500 shadow-md">
+        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-md bg-red-500 shadow-md z-50">
           <span className="text-white font-medium">{error}</span>
+        </div>
+      )}
+      {success && (
+        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-md bg-green-500 shadow-md z-50">
+          <span className="text-white font-medium">{success}</span>
         </div>
       )}
 
@@ -88,7 +135,9 @@ const ShopPage = () => {
                   <img
                     src={
                       product.image?.data
-                        ? `data:image/jpeg;base64,${product.image.data}`
+                        ? `data:${
+                            product.image?.contentType || "image/jpeg"
+                          };base64,${bufferToBase64(product.image.data)}`
                         : "https://via.placeholder.com/150"
                     }
                     alt={product.name}
@@ -106,17 +155,20 @@ const ShopPage = () => {
                   <h3 className="text-lg font-semibold">{product.name}</h3>
                   <div className="mt-2 flex items-center gap-2">
                     <span className="text-red-500 font-bold text-lg">
-                      ₹{product.discount}
+                      ₹{product.price - product.discount}
                     </span>
                     <span className="text-gray-500 line-through text-sm">
                       ₹{product.price}
                     </span>
                     <span className="text-green-500 text-sm font-medium ml-2">
-                      (₹{product.price - product.discount} off)
+                      ( ₹{product.discount} off)
                     </span>
                   </div>
 
-                  <form className="mt-4 flex items-center gap-2">
+                  <form
+                    className="mt-4 flex items-center gap-2"
+                    onSubmit={(e) => handleAddToCart(e, product._id)}
+                  >
                     <input
                       type="number"
                       name="quantity"

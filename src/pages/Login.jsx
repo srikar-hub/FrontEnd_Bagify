@@ -47,7 +47,7 @@ const Login = () => {
           <p className="text-gray-500 text-sm">
             Don't have an account?
             <a
-              href="#"
+              href="/signup"
               className="text-blue-600 hover:text-blue-800 ml-1 cursor-pointer"
             >
               Sign up

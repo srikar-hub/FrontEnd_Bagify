@@ -20,6 +20,7 @@ const Header = ({ loggedIn = true }) => {
         <div className="flex gap-5">
           <NavLink to="/shop">Shop</NavLink>
           <NavLink to="/cart">Cart</NavLink>
+          <NavLink to="/ordersuccess">My Orders</NavLink>
           <NavLink to="/myaccount">My Account</NavLink>
           <button onClick={handleLogout}>Logout</button>
         </div>
