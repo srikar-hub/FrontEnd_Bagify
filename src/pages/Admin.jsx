@@ -9,6 +9,8 @@ const Admin = () => {
     bgcolor: "",
     panelcolor: "",
     textcolor: "",
+    company: "Samsonite",
+    category: "Male",
   });
 
   const [image, setImage] = useState(null);
@@ -35,6 +37,8 @@ const Admin = () => {
     formData.append("bgcolor", form.bgcolor);
     formData.append("panelcolor", form.panelcolor);
     formData.append("textcolor", form.textcolor);
+    formData.append("company", form.company);
+    formData.append("category", form.category);
 
     try {
       const res = await axios.post(
@@ -120,6 +124,35 @@ const Admin = () => {
                     value={form.discount}
                     className="border p-2 rounded w-full"
                   />
+                  <select
+                    name="company"
+                    value={form.company}
+                    onChange={handleChange}
+                    className="border p-2 rounded w-full"
+                  >
+                    <option value="Samsonite">Samsonite</option>
+                    <option value="American Tourister">
+                      American Tourister
+                    </option>
+                    <option value="Tumi">Tumi</option>
+                    <option value="Wildcraft">Wildcraft</option>
+                    <option value="Skybags">Skybags</option>
+                    <option value="Wrongn">Wrongn</option>
+                    <option value="VIP">VIP</option>
+                    <option value="Puma">Puma</option>
+                    <option value="Adidas">Adidas</option>
+                    <option value="Nike">Nike</option>
+                  </select>
+                  <select
+                    name="category"
+                    value={form.category}
+                    onChange={handleChange}
+                    className="border p-2 rounded w-full"
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Children">Children</option>
+                  </select>
                 </div>
               </div>
 

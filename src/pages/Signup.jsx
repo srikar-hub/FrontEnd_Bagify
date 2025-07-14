@@ -212,12 +212,12 @@ const Signup = () => {
           <div className="flex items-center justify-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <a
-                href="#"
+              <button
+                onClick={() => navigate("/login")}
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
                 Log in
-              </a>
+              </button>
             </p>
           </div>
         </form>

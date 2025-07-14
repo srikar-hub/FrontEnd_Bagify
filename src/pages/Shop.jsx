@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-// Helper to convert Buffer (array) to base64
+import axios from "axios";
+import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 function bufferToBase64(buffer) {
   if (!buffer) return "";
   // If it's already a string, return as is
@@ -14,15 +15,31 @@ function bufferToBase64(buffer) {
   }
   return window.btoa(binary);
 }
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+const COMPANY_LIST = [
+  "Samsonite",
+  "American Tourister",
+  "Tumi",
+  "Wildcraft",
+  "Skybags",
+  "Wrongn",
+  "VIP",
+  "Puma",
+  "Adidas",
+  "Nike",
+];
+const CATEGORY_LIST = ["Male", "Female", "Children"];
 
 const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCompanies, setSelectedCompanies] = useState([]);
   const navigate = useNavigate();
+  const { category } = useParams();
+  const location = useLocation();
+
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -30,22 +47,6 @@ const ShopPage = () => {
           withCredentials: true,
         });
         setProducts(res.data.products);
-        res.data.products.forEach((product) => {
-          if (product.image?.data) {
-            console.log(
-              `Image Data for ${product.name.substring(0, 10)}...:`,
-              product.image.data.substring(0, 50) + "..."
-            ); // Log a snippet
-            console.log(
-              `Data URL for ${product.name.substring(0, 10)}...:`,
-              `data:${
-                product.image?.contentType || "image/jpeg"
-              };base64,${product.image.data.substring(0, 50)}...`
-            );
-          } else {
-            console.log(`No image data for ${product.name}`);
-          }
-        });
       } catch (err) {
         if (err.response?.status === 401) {
           navigate("/login");
@@ -57,9 +58,32 @@ const ShopPage = () => {
         setLoading(false);
       }
     }
-
     fetchProducts();
-  }, []);
+  }, [navigate]);
+
+  // Set selectedCategory from URL param if present
+  useEffect(() => {
+    if (
+      category &&
+      CATEGORY_LIST.includes(
+        category.charAt(0).toUpperCase() + category.slice(1)
+      )
+    ) {
+      setSelectedCategory(category.charAt(0).toUpperCase() + category.slice(1));
+    } else {
+      setSelectedCategory("all");
+    }
+  }, [category, location.pathname]);
+
+  // Filtering logic
+  const filteredProducts = products.filter((product) => {
+    let matchCategory =
+      selectedCategory === "all" || product.category === selectedCategory;
+    let matchCompany =
+      selectedCompanies.length === 0 ||
+      selectedCompanies.includes(product.company);
+    return matchCategory && matchCompany;
+  });
 
   if (loading) {
     return (
@@ -101,35 +125,116 @@ const ShopPage = () => {
         </div>
       )}
 
-      <div className="w-full min-h-screen flex px-10 py-10 bg-gray-100">
+      <div className="w-full min-h-screen flex px-10 py-10 bg-gradient-to-br from-blue-50 via-white to-yellow-50">
         {/* Sidebar */}
-        <aside className="w-1/4 bg-white rounded-lg p-5 shadow-md">
-          <h3 className="text-xl font-semibold mb-5">Filters</h3>
-          <div className="mb-5">
-            <h4 className="text-lg font-medium">Sort By</h4>
-            <form method="GET" className="mt-2">
-              <select
-                name="sortby"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        <aside className="w-1/4 bg-white rounded-2xl p-7 shadow-xl sticky top-8 self-start border border-blue-100">
+          <h3 className="text-2xl font-bold mb-7 text-blue-900 tracking-tight">
+            Filters
+          </h3>
+          {/* Category Filter */}
+          <div className="mb-8">
+            <h4 className="text-lg font-semibold mb-3 text-blue-700">
+              Category
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              <button
+                className={`px-4 py-1 rounded-full border text-sm font-medium transition-all duration-150 ${
+                  selectedCategory === "all"
+                    ? "bg-blue-600 text-white border-blue-600 shadow"
+                    : "bg-white text-blue-700 border-blue-300 hover:bg-blue-50"
+                }`}
+                onClick={() => {
+                  setSelectedCategory("all");
+                  navigate("/shop");
+                }}
               >
-                <option value="default">Select</option>
-                <option value="lowtohigh">Price (Low to High)</option>
-                <option value="hightolow">Price (High to Low)</option>
-              </select>
-            </form>
+                All
+              </button>
+              {CATEGORY_LIST.map((cat) => (
+                <button
+                  key={cat}
+                  className={`px-4 py-1 rounded-full border text-sm font-medium transition-all duration-150 ${
+                    selectedCategory === cat
+                      ? "bg-blue-600 text-white border-blue-600 shadow"
+                      : "bg-white text-blue-700 border-blue-300 hover:bg-blue-50"
+                  }`}
+                  onClick={() => {
+                    setSelectedCategory(cat);
+                    navigate(`/shop/${cat.toLowerCase()}`);
+                  }}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+          {/* Company Filter */}
+          <div className="mb-8">
+            <h4 className="text-lg font-semibold mb-3 text-blue-700">
+              Company
+            </h4>
+            <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
+              {COMPANY_LIST.map((company) => (
+                <button
+                  key={company}
+                  className={`px-3 py-1 rounded-full border text-xs font-medium transition-all duration-150 ${
+                    selectedCompanies.includes(company)
+                      ? "bg-yellow-400 text-blue-900 border-yellow-400 shadow"
+                      : "bg-white text-blue-700 border-blue-300 hover:bg-yellow-50"
+                  }`}
+                  onClick={() => {
+                    if (selectedCompanies.includes(company)) {
+                      setSelectedCompanies((prev) =>
+                        prev.filter((c) => c !== company)
+                      );
+                    } else {
+                      setSelectedCompanies((prev) => [...prev, company]);
+                    }
+                  }}
+                >
+                  {company}
+                </button>
+              ))}
+            </div>
+          </div>
+          {/* Category Page Links */}
+          <div className="mb-2 border-t pt-5 border-blue-100">
+            <h4 className="text-lg font-semibold mb-3 text-blue-700">
+              Category Pages
+            </h4>
+            <div className="flex flex-col gap-2">
+              {CATEGORY_LIST.map((cat) => (
+                <Link
+                  key={cat}
+                  to={`/shop/${cat.toLowerCase()}`}
+                  className={`text-blue-600 hover:underline ${
+                    selectedCategory === cat ? "font-bold underline" : ""
+                  }`}
+                  onClick={() => setSelectedCategory(cat)}
+                >
+                  {cat} Page
+                </Link>
+              ))}
+            </div>
           </div>
         </aside>
 
         {/* Product Grid */}
-        <main className="w-3/4 grid grid-cols-4 gap-6 px-5">
-          {products.length > 0 ? (
-            products.map((product) => (
+        <main className="w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 px-5">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
               <div
                 key={product._id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-[1.03] transition-all duration-200 border border-blue-100 flex flex-col items-stretch mx-auto"
+                style={{
+                  minHeight: 180,
+                  minWidth: 220,
+                  maxWidth: 270,
+                  margin: "0 auto",
+                }}
               >
                 <div
-                  className="h-52 flex items-center justify-center"
+                  className="h-24 flex items-center justify-center relative p-1"
                   style={{ backgroundColor: product.bgcolor }}
                 >
                   <img
@@ -141,32 +246,46 @@ const ShopPage = () => {
                         : "https://via.placeholder.com/150"
                     }
                     alt={product.name}
-                    className="h-40 object-contain"
+                    className="h-16 object-contain drop-shadow-lg mx-auto"
                   />
+                  {/* Badges */}
+                  <div className="absolute top-1 left-1 flex gap-1 z-10">
+                    <span className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full font-semibold shadow">
+                      {product.company}
+                    </span>
+                    <span className="bg-yellow-400 text-blue-900 text-xs px-2 py-0.5 rounded-full font-semibold shadow">
+                      {product.category}
+                    </span>
+                  </div>
                 </div>
 
                 <div
-                  className="p-4"
+                  className="p-3 flex flex-col flex-1 justify-between"
                   style={{
                     backgroundColor: product.panelcolor,
                     color: product.textcolor,
                   }}
                 >
-                  <h3 className="text-lg font-semibold">{product.name}</h3>
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="text-red-500 font-bold text-lg">
+                  <h3
+                    className="text-base font-bold mb-1 truncate"
+                    title={product.name}
+                  >
+                    {product.name}
+                  </h3>
+                  <div className="flex items-center gap-1 mb-2">
+                    <span className="text-red-500 font-bold text-base">
                       ₹{product.price - product.discount}
                     </span>
-                    <span className="text-gray-500 line-through text-sm">
+                    <span className="text-gray-400 line-through text-xs">
                       ₹{product.price}
                     </span>
-                    <span className="text-green-500 text-sm font-medium ml-2">
-                      ( ₹{product.discount} off)
+                    <span className="text-green-500 text-xs font-medium ml-1">
+                      (₹{product.discount} off)
                     </span>
                   </div>
 
                   <form
-                    className="mt-4 flex items-center gap-2"
+                    className="mt-auto flex items-center gap-1"
                     onSubmit={(e) => handleAddToCart(e, product._id)}
                   >
                     <input
@@ -174,11 +293,11 @@ const ShopPage = () => {
                       name="quantity"
                       defaultValue={1}
                       min="1"
-                      className="w-16 border border-gray-300 rounded px-2 py-1"
+                      className="w-12 border border-gray-300 rounded px-1 py-0.5 focus:ring-2 focus:ring-blue-400 text-sm"
                     />
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition-colors"
+                      className="px-3 py-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors font-semibold text-sm"
                     >
                       Add to Cart
                     </button>

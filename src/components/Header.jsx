@@ -7,7 +7,7 @@ const Header = ({ loggedIn = true }) => {
       await axios.get("http://localhost:4000/logout", {
         withCredentials: true,
       });
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (err) {
       console.error("Logout error:", err);
     }
