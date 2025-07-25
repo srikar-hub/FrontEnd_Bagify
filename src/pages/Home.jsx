@@ -145,7 +145,7 @@ export default function Home() {
       </section>
 
       {/* About Us Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="about" className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-6">About Us</h2>
@@ -289,7 +289,7 @@ export default function Home() {
               <ul className="space-y-2">
                 <li>
                   <a
-                    href="#"
+                    href="#about"
                     className="text-gray-600 hover:text-primary transition-colors"
                   >
                     About Us
@@ -313,7 +313,7 @@ export default function Home() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="mailto:koppunoorisrikar@gmail.com"
                     className="text-gray-600 hover:text-primary transition-colors"
                   >
                     Contact
@@ -331,19 +331,23 @@ export default function Home() {
                   <div className="w-5 h-5 flex items-center justify-center">
                     <i className="ri-mail-line text-gray-600"></i>
                   </div>
-                  <span className="text-gray-600">hello@bagify.com</span>
+                  <span className="text-gray-600">
+                    koppunoorisrikar@gmail.com
+                  </span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-5 h-5 flex items-center justify-center">
                     <i className="ri-phone-line text-gray-600"></i>
                   </div>
-                  <span className="text-gray-600">+1 (555) 123-4567</span>
+                  <span className="text-gray-600">+91 9618420523</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-5 h-5 flex items-center justify-center">
                     <i className="ri-map-pin-line text-gray-600"></i>
                   </div>
-                  <span className="text-gray-600">New York, NY 10001</span>
+                  <span className="text-gray-600">
+                    Vijayawada,Andhra Pradesh
+                  </span>
                 </div>
               </div>
             </div>

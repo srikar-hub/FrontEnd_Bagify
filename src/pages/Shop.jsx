@@ -1,20 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
-function bufferToBase64(buffer) {
-  if (!buffer) return "";
-  // If it's already a string, return as is
-  if (typeof buffer === "string") return buffer;
-  // If it's an object with 'data' property (from MongoDB Binary), use that
-  if (buffer.data && Array.isArray(buffer.data)) buffer = buffer.data;
-  // Convert array to Uint8Array, then to base64
-  const uint8Array = new Uint8Array(buffer);
-  let binary = "";
-  for (let i = 0; i < uint8Array.length; i++) {
-    binary += String.fromCharCode(uint8Array[i]);
-  }
-  return window.btoa(binary);
-}
+
 const COMPANY_LIST = [
   "Samsonite",
   "American Tourister",
@@ -220,33 +207,35 @@ const ShopPage = () => {
         </aside>
 
         {/* Product Grid */}
-        <main className="w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 px-5">
+        <main className="w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 px-5">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <div
                 key={product._id}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-[1.03] transition-all duration-200 border border-blue-100 flex flex-col items-stretch mx-auto"
                 style={{
-                  minHeight: 180,
-                  minWidth: 220,
-                  maxWidth: 270,
-                  margin: "0 auto",
+                  width: 260,
+                  height: 340,
+                  minWidth: 260,
+                  minHeight: 340,
+                  maxWidth: 260,
+                  maxHeight: 340,
                 }}
               >
                 <div
-                  className="h-24 flex items-center justify-center relative p-1"
+                  className="h-44 flex items-center justify-center relative p-1"
                   style={{ backgroundColor: product.bgcolor }}
                 >
                   <img
                     src={
                       product.image?.data
                         ? `data:${
-                            product.image?.contentType || "image/jpeg"
-                          };base64,${bufferToBase64(product.image.data)}`
-                        : "https://via.placeholder.com/150"
+                            product.image.contentType || "image/jpeg"
+                          };base64,${product.image.data}`
+                        : "/vite.svg"
                     }
                     alt={product.name}
-                    className="h-16 object-contain drop-shadow-lg mx-auto"
+                    className="h-36 object-contain drop-shadow-lg mx-auto"
                   />
                   {/* Badges */}
                   <div className="absolute top-1 left-1 flex gap-1 z-10">
@@ -260,7 +249,7 @@ const ShopPage = () => {
                 </div>
 
                 <div
-                  className="p-3 flex flex-col flex-1 justify-between"
+                  className="p-2 flex flex-col flex-1 justify-between"
                   style={{
                     backgroundColor: product.panelcolor,
                     color: product.textcolor,

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -33,44 +34,42 @@ const Footer = () => {
               </h3>
               <ul className="space-y-3">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/about"
                     className="text-gray-400 hover:text-white transition"
-                  >
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition"
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
                   >
                     About Us
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a
-                    href="/shop"
+                    href="#privacy"
                     className="text-gray-400 hover:text-white transition"
                   >
-                    Shop
+                    Privacy Policy
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/myaccount"
+                    href="#terms"
                     className="text-gray-400 hover:text-white transition"
                   >
-                    My Account
+                    Terms of Service
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/contact"
                     className="text-gray-400 hover:text-white transition"
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -81,31 +80,29 @@ const Footer = () => {
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="tel:+1234567890"
+                    href="tel:+919618420523"
                     className="text-gray-400 hover:text-white transition"
                   >
                     <i className="fas fa-phone-alt mr-2"></i>
-                    (123) 456-7890
+                    9618420523
                   </a>
                 </li>
                 <li>
                   <a
-                    href="mailto:info@example.com"
+                    href="mailto:koppunoorisrikar@gmail.com"
                     className="text-gray-400 hover:text-white transition"
                   >
                     <i className="fas fa-envelope mr-2"></i>
-                    info@example.com
+                    koppunoorisrikar@gmail.com
                   </a>
                 </li>
                 <li>
                   <div className="text-gray-400 flex items-start">
                     <i className="fas fa-map-marker-alt mr-2 mt-1"></i>
                     <span>
-                      123 Business Ave,
+                      Vijayawada,
                       <br />
-                      Suite 100,
-                      <br />
-                      New York, NY 10001
+                      Andhra Pradesh
                     </span>
                   </div>
                 </li>

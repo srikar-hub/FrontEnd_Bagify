@@ -1,6 +1,5 @@
-import { Route } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
-import { Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Admin from "./pages/Admin";
@@ -12,6 +11,8 @@ import AddressPage from "./pages/Address";
 import OrderSuccess from "./pages/OrderSuccess";
 import Home from "./pages/Home";
 function App() {
+  const location = useLocation();
+  const hideHeaderRoutes = ["/", "/login", "/signup"];
   return (
     <>
       <Routes>
@@ -19,7 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
-      <Header />
+      {!hideHeaderRoutes.includes(location.pathname) && <Header />}
       <Routes>
         <Route path="/addproduct" element={<Admin />} />
         <Route path="/cart" element={<CartPage />} />

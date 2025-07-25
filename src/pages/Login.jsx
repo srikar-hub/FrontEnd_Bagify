@@ -21,13 +21,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let res = await axios.post("http://localhost:4000/login", formData, {
-      withCredentials: true,
-    });
-    if (res.status === 200) {
-      navigate("/shop");
-    } else {
-      alert(res.data.message);
+    try {
+      let res = await axios.post("http://localhost:4000/login", formData, {
+        withCredentials: true,
+      });
+      if (res.status === 200) {
+        navigate("/shop");
+      } else {
+        alert("Email or password is incorrect");
+      }
+    } catch (error) {
+      alert("Email or password is incorrect");
     }
   };
   return (
@@ -134,16 +138,7 @@ const Login = () => {
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
 
-          {/* Social Login Buttons */}
-          <div className="space-y-3">
-            <button
-              type="button"
-              className="w-full flex items-center justify-center bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-700 hover:bg-gray-50 transition duration-200 !rounded-button whitespace-nowrap cursor-pointer"
-            >
-              <FontAwesomeIcon icon={faGoogle} className="text-red-500 mr-3" />
-              <span className="text-sm font-medium">Continue with Google</span>
-            </button>
-          </div>
+          {/* Social Login Buttons removed as requested */}
         </form>
 
         {/* Footer */}

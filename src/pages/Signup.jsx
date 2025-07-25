@@ -21,13 +21,16 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.password.length < 5) {
+      alert("Password must be at least 5 characters long.");
+      return;
+    }
     const res = await axios.post("http://localhost:4000/create", formData, {
       withCredentials: true,
     });
-
     if (res.status == 201) {
       alert(res.data.message);
-      navigate("/");
+      navigate("/login");
     } else {
       alert("Error:" + res.data.message);
     }
@@ -167,34 +170,8 @@ const Signup = () => {
             {/* Password Guidelines */}
             <div className="bg-gray-50 p-4 rounded-md">
               <h3 className="text-sm font-medium text-gray-700 mb-2">
-                Password must contain:
+                Password must contain at least 5 characters.
               </h3>
-              <ul className="space-y-1">
-                <li className="flex items-center text-sm">
-                  <i className="fas fa-check text-green-500 w-5"></i>
-                  <span className="text-green-700 ml-1">
-                    Minimum 4 characters
-                  </span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <i className="fas fa-check text-green-500 w-5"></i>
-                  <span className="text-green-700 ml-1">
-                    At least one lowercase letter
-                  </span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <i className="fas fa-check text-green-500 w-5"></i>
-                  <span className="text-green-700 ml-1">
-                    At least one uppercase letter
-                  </span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <i className="fas fa-check text-green-500 w-5"></i>
-                  <span className="text-green-700 ml-1">
-                    At least one number
-                  </span>
-                </li>
-              </ul>
             </div>
 
             {/* Submit Button */}
