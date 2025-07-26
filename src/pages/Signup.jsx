@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -235,13 +234,13 @@ const Signup = () => {
         {/* Terms and Conditions */}
         <div className="text-center text-xs text-gray-500 mt-8">
           By signing up, you agree to our{" "}
-          <a href="#" className="text-indigo-600 hover:text-indigo-500">
+          <Link to="#" className="text-indigo-600 hover:text-indigo-500">
             Terms of Service
-          </a>{" "}
+          </Link>{" "}
           and{" "}
-          <a href="#" className="text-indigo-600 hover:text-indigo-500">
+          <Link to="#" className="text-indigo-600 hover:text-indigo-500">
             Privacy Policy
-          </a>
+          </Link>
         </div>
       </div>
     </div>

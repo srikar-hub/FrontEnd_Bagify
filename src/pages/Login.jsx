@@ -1,11 +1,8 @@
 import { API_BASE_URL } from "../api";
 // The exported code uses Tailwind CSS. Install Tailwind CSS in your dev environment to ensure all styles work.
 
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 const Login = () => {
   const navigate = useNavigate();
@@ -54,12 +51,12 @@ const Login = () => {
           </h2>
           <p className="text-gray-500 text-sm">
             Don't have an account?
-            <a
-              href="/signup"
+            <Link
+              to="/signup"
               className="text-blue-600 hover:text-blue-800 ml-1 cursor-pointer"
             >
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
 
@@ -149,18 +146,18 @@ const Login = () => {
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-500">
           <div className="mb-2">
-            <a href="#" className="hover:text-gray-700 cursor-pointer">
+            <Link to="#" className="hover:text-gray-700 cursor-pointer">
               Terms of Service
-            </a>
+            </Link>
             <span className="mx-2">•</span>
-            <a href="#" className="hover:text-gray-700 cursor-pointer">
+            <Link to="#" className="hover:text-gray-700 cursor-pointer">
               Privacy Policy
-            </a>
+            </Link>
           </div>
           <div className="mb-2">
-            <a href="#" className="hover:text-gray-700 cursor-pointer">
+            <Link to="#" className="hover:text-gray-700 cursor-pointer">
               Need help?
-            </a>
+            </Link>
           </div>
           <div>
             © {new Date().getFullYear()} SecureConnect. All rights reserved.

@@ -13,18 +13,30 @@ const Footer = () => {
               amazing.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition">
+              <Link
+                to="#"
+                className="text-gray-400 hover:text-white transition"
+              >
                 <i className="fab fa-instagram text-xl"></i>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition">
+              </Link>
+              <Link
+                to="#"
+                className="text-gray-400 hover:text-white transition"
+              >
                 <i className="fab fa-google text-xl"></i>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition">
+              </Link>
+              <Link
+                to="#"
+                className="text-gray-400 hover:text-white transition"
+              >
                 <i className="fab fa-linkedin text-xl"></i>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition">
+              </Link>
+              <Link
+                to="#"
+                className="text-gray-400 hover:text-white transition"
+              >
                 <i className="fab fa-twitter text-xl"></i>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-8">
