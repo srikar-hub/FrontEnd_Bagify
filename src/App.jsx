@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import AddressPage from "./pages/Address";
 import OrderSuccess from "./pages/OrderSuccess";
 import Home from "./pages/Home";
+import PrivateRoute from "./components/PrivateRoute";
 function App() {
   const location = useLocation();
   const hideHeaderRoutes = ["/", "/login", "/signup"];
@@ -23,13 +24,62 @@ function App() {
       {/* Hide header on reset-password page as well */}
       {!hideHeaderRoutes.includes(location.pathname) && <Header />}
       <Routes>
-        <Route path="/addproduct" element={<Admin />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/myaccount" element={<AccountPage />} />
-        <Route path="/shop" element={<ShopPage />} />
-        <Route path="/shop/:category" element={<ShopPage />} />
-        <Route path="/address" element={<AddressPage />} />
-        <Route path="/ordersuccess" element={<OrderSuccess />} />
+        <Route
+          path="/addproduct"
+          element={
+            <PrivateRoute>
+              <Admin />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <PrivateRoute>
+              <CartPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/myaccount"
+          element={
+            <PrivateRoute>
+              <AccountPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/shop"
+          element={
+            <PrivateRoute>
+              <ShopPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/shop/:category"
+          element={
+            <PrivateRoute>
+              <ShopPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/address"
+          element={
+            <PrivateRoute>
+              <AddressPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/ordersuccess"
+          element={
+            <PrivateRoute>
+              <OrderSuccess />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </>
   );
