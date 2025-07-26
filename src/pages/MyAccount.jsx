@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../api";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 const AccountPage = () => {
@@ -8,7 +9,7 @@ const AccountPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const userRes = await axios.get("http://localhost:4000/me", {
+        const userRes = await axios.get(`${API_BASE_URL}/me`, {
           withCredentials: true,
         });
         setUser(userRes.data.user);

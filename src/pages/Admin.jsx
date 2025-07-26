@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../api";
 import React, { useState } from "react";
 import axios from "axios";
 const Admin = () => {
@@ -41,10 +42,7 @@ const Admin = () => {
     formData.append("category", form.category);
 
     try {
-      const res = await axios.post(
-        "http://localhost:4000/product/add",
-        formData
-      );
+      const res = await axios.post(`${API_BASE_URL}/product/add`, formData);
       if (res.status === 201) {
         setSuccess("Product Created sucessfully");
       } else {

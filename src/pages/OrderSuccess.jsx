@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../api";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -23,7 +24,7 @@ const OrderSuccess = () => {
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const res = await axios.get("http://localhost:4000/cart/myorders", {
+        const res = await axios.get(`${API_BASE_URL}/cart/myorders`, {
           withCredentials: true,
         });
         setOrderItems(res.data.orders || []);

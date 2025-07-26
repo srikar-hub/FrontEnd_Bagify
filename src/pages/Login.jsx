@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../api";
 // The exported code uses Tailwind CSS. Install Tailwind CSS in your dev environment to ensure all styles work.
 
 import React from "react";
@@ -24,7 +25,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await axios.post("http://localhost:4000/login", formData, {
+      let res = await axios.post(`${API_BASE_URL}/login`, formData, {
         withCredentials: true,
       });
       if (res.status === 200) {
@@ -33,7 +34,7 @@ const Login = () => {
       } else {
         setErrorMsg("Email or password is incorrect");
       }
-    } catch  {
+    } catch {
       setErrorMsg("Email or password is incorrect");
     }
   };

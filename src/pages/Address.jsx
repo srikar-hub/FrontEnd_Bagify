@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../api";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +21,7 @@ const AddressPage = () => {
 
   const fetchAddresses = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/address/", {
+      const res = await axios.get(`${API_BASE_URL}/address/`, {
         withCredentials: true,
       });
       setAddresses(res.data.addresses || []);
@@ -44,7 +45,7 @@ const AddressPage = () => {
     setError("");
     setSuccess("");
     try {
-      await axios.post("http://localhost:4000/address/create", form, {
+      await axios.post(`${API_BASE_URL}/address/create`, form, {
         withCredentials: true,
       });
       setSuccess("Address added successfully!");
@@ -72,7 +73,7 @@ const AddressPage = () => {
     }
     try {
       await axios.post(
-        "http://localhost:4000/cart/checkout",
+        `${API_BASE_URL}/cart/checkout`,
         { addressId: selectedAddress },
         { withCredentials: true }
       );

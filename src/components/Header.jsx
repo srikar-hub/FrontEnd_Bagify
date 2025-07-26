@@ -1,10 +1,11 @@
+import { API_BASE_URL } from "../api";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 const Header = ({ loggedIn = true }) => {
   const handleLogout = async () => {
     try {
-      await axios.get("http://localhost:4000/logout", {
+      await axios.get(`${API_BASE_URL}/logout`, {
         withCredentials: true,
       });
       window.location.href = "/";

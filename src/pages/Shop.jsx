@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
@@ -30,7 +31,7 @@ const ShopPage = () => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await axios.get("http://localhost:4000/product/all", {
+        const res = await axios.get(`${API_BASE_URL}/product/all`, {
           withCredentials: true,
         });
         setProducts(res.data.products);
@@ -87,7 +88,7 @@ const ShopPage = () => {
     const quantity = parseInt(form.quantity.value, 10) || 1;
     try {
       await axios.post(
-        "http://localhost:4000/cart/add",
+        `${API_BASE_URL}/cart/add`,
         { productId, quantity },
         { withCredentials: true }
       );

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../api";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,7 +12,7 @@ const CartPage = () => {
   // Fetch cart from backend
   const fetchCart = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/cart/", {
+      const res = await axios.get(`${API_BASE_URL}/cart/`, {
         withCredentials: true,
       });
       setCart(res.data.cart || []);
@@ -32,7 +33,7 @@ const CartPage = () => {
     try {
       setLoading(true);
       await axios.post(
-        "http://localhost:4000/cart/remove",
+        `${API_BASE_URL}/cart/remove`,
         { productId },
         { withCredentials: true }
       );
