@@ -19,22 +19,33 @@ const Signup = () => {
     }));
   };
 
+  const [errorMsg, setErrorMsg] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
     if (formData.password.length < 5) {
-      alert("Password must be at least 5 characters long.");
+      setErrorMsg("Password must be at least 5 characters long.");
       return;
     }
-    const res = await axios.post("http://localhost:4000/create", formData, {
-      withCredentials: true,
-    });
-    if (res.status == 201) {
-      alert(res.data.message);
-      navigate("/login");
-    } else {
-      alert("Error:" + res.data.message);
+    try {
+      const res = await axios.post("http://localhost:4000/create", formData, {
+        withCredentials: true,
+      });
+      if (res.status === 201) {
+        alert(res.data.message);
+        navigate("/login");
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 409) {
+        setErrorMsg("User already exists");
+      } else {
+        setErrorMsg(
+          "Error: " + (err.response?.data?.message || "Something went wrong")
+        );
+      }
     }
   };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 space-y-8">
@@ -44,7 +55,11 @@ const Signup = () => {
             Join us today and start your journey
           </p>
         </div>
-
+        {errorMsg && (
+          <div className="mb-4 text-red-600 text-center font-semibold">
+            {errorMsg}
+          </div>
+        )}
         <form className="mt-8 space-y-6" method="post" onSubmit={handleSubmit}>
           <div className="space-y-5">
             {/* Username Field */}
