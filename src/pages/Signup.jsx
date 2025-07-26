@@ -1,4 +1,4 @@
-import React from "react";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -28,9 +28,13 @@ const Signup = () => {
       return;
     }
     try {
-      const res = await axios.post("http://localhost:4000/create", formData, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        "https://backend-bagify.onrender.com/create",
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
       if (res.status === 201) {
         alert(res.data.message);
         navigate("/login");

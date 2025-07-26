@@ -33,7 +33,7 @@ const Login = () => {
       } else {
         setErrorMsg("Email or password is incorrect");
       }
-    } catch (error) {
+    } catch  {
       setErrorMsg("Email or password is incorrect");
     }
   };
