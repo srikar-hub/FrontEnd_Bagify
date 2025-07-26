@@ -16,14 +16,11 @@ function App() {
   const hideHeaderRoutes = ["/", "/login", "/signup"];
   return (
     <>
+      {!hideHeaderRoutes.includes(location.pathname) && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-      </Routes>
-      {/* Hide header on reset-password page as well */}
-      {!hideHeaderRoutes.includes(location.pathname) && <Header />}
-      <Routes>
         <Route
           path="/addproduct"
           element={
