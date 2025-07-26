@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -12,11 +12,13 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [errorMsg, setErrorMsg] = useState("");
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+    setErrorMsg("");
   };
 
   const handleSubmit = async (e) => {
@@ -26,12 +28,13 @@ const Login = () => {
         withCredentials: true,
       });
       if (res.status === 200) {
+        setErrorMsg("");
         navigate("/shop");
       } else {
-        alert("Email or password is incorrect");
+        setErrorMsg("Email or password is incorrect");
       }
     } catch (error) {
-      alert("Email or password is incorrect");
+      setErrorMsg("Email or password is incorrect");
     }
   };
   return (
@@ -65,6 +68,11 @@ const Login = () => {
           method="post"
           onSubmit={handleSubmit}
         >
+          {errorMsg && (
+            <div className="mb-4 text-red-600 text-center font-semibold">
+              {errorMsg}
+            </div>
+          )}
           {/* Email Field */}
           <div className="mb-6">
             <label
@@ -83,7 +91,6 @@ const Login = () => {
               placeholder="Enter your email"
             />
           </div>
-
           {/* Password Field */}
           <div className="mb-4">
             <label
@@ -111,17 +118,16 @@ const Login = () => {
               </button>
             </div>
           </div>
-
-          {/* Forgot Password */}
-          <div className="flex justify-end mb-6">
-            <a
-              href="#"
-              className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer"
+          {/* // forgot password */}
+          {/* <div className="flex justify-end mb-6">
+            <button
+              type="button"
+              onClick={() => navigate("/forgot-password")}
+              className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer bg-transparent border-none p-0"
             >
               Forgot password?
-            </a>
-          </div>
-
+            </button>
+          </div> */}
           {/* Login Button */}
           <button
             type="submit"
@@ -130,14 +136,12 @@ const Login = () => {
             <i className="fas fa-sign-in-alt"></i>
             Log In
           </button>
-
           {/* Divider */}
           <div className="my-6 flex items-center">
             <div className="flex-grow border-t border-gray-300"></div>
             <span className="mx-4 text-gray-500 text-sm">OR</span>
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
-
           {/* Social Login Buttons removed as requested */}
         </form>
 
