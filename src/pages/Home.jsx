@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -125,12 +125,12 @@ export default function Home() {
                 >
                   Login
                 </button>
-                <button
-                  className="px-8 py-4 bg-primary text-white hover:bg-opacity-90 transition-colors duration-200 !rounded-button whitespace-nowrap text-lg font-semibold"
-                  onClick={handleSignup}
+                <Link
+                  to="/signup"
+                  className="px-8 py-4 bg-primary text-white hover:bg-opacity-90 transition-colors duration-200 !rounded-button whitespace-nowrap text-lg font-semibold text-center flex items-center justify-center"
                 >
                   Sign Up
-                </button>
+                </Link>
               </div>
             </div>
             <div className="relative">
